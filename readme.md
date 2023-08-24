@@ -1,3 +1,7 @@
 # Shopping List
 
-Simple Shopping List APP
+Vanilla JavaScript shopping list app from Modern JS From The Beginning course (Traversiny BRAD).
+
+This project was created to focus on working with the DOM, events, state, local storage and other fundamentals of JavaScript.
+
+<img src="images/screen.png" width="400">
