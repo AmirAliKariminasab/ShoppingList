@@ -6,23 +6,28 @@ const itemFilter = document.getElementById('filter');
 const formBtn = itemForm.querySelector('button');
 let isEditMode = false;
 
+// Displaying items from local storage 
 function displayItem() {
     const itemsFromStorage = getItemsFromStorage();
     itemsFromStorage.forEach(item => addItemToDOM(item));
     checkUI();
 }
+
+// This function runs when Add item button has been clicked
 function onAddItemSubmit(e) {
+    // Prevents page  action(reload)
     e.preventDefault();
 
+    // checks if the input has a value or not
     const newItem = itemInput.value;
     if (newItem === '') {
         alert('Please Add An Item');
         return;
     }
 
-    // check for edit mode
+    // check for edit mode (this if will remove the item and replace it with the new one)
     if (isEditMode) {
-        const itemToEdit = itemList.querySelector('.edit-mode');
+        const itemToEdit = itemList.querySelector('.edit-mode');  // Finds element with class of edit-mode (This will get added to button element when setItemToEdit function runs)
         removeItemFromStorage(itemToEdit.textContent);
         itemToEdit.classList.remove('edit-mode');
         itemToEdit.remove();
@@ -38,7 +43,7 @@ function onAddItemSubmit(e) {
     addItemToDOM(newItem);
     // Add Item to Local Storage
     addItemToStorage(newItem);
-
+    // Checking if there are any items in the list to choose to display clear button and filter form
     checkUI();
     itemInput.value = '';
 }
@@ -56,6 +61,7 @@ function addItemToDOM(item) {
 
 }
 
+//  button for X
 function createButton(classes) {
     const button = document.createElement('button');
     button.className = classes;
@@ -66,13 +72,14 @@ function createButton(classes) {
     return button;
 }
 
+// creates X icon for the item button
 function createIcon(classes) {
     const icon = document.createElement('i');
     icon.className = classes;
     return icon;
 }
 
-
+// Adding the items to localstorage
 function addItemToStorage(item) {
     let itemsFromStorage = getItemsFromStorage();
     // Add new item to Array
@@ -82,7 +89,8 @@ function addItemToStorage(item) {
 
 }
 
-function getItemsFromStorage(item) {
+// Checks if there are any items in local storage or not and if they were it will return it as an array
+function getItemsFromStorage() {
     let itemsFromStorage;
     if (localStorage.getItem('items') === null) {
         itemsFromStorage = [];
@@ -92,6 +100,7 @@ function getItemsFromStorage(item) {
     return itemsFromStorage;
 }
 
+// Deletes an item
 function onClickItem(e) {
     if (e.target.parentElement.classList.contains('remove-item')) {
         removeItem(e.target.parentElement.parentElement);
@@ -100,12 +109,14 @@ function onClickItem(e) {
     }
 }
 
+// Showing that if item exists in local storage
 function checkIfItemExists(item) {
     const itemsFromStorage = getItemsFromStorage();
 
     return itemsFromStorage.includes(item);
 }
 
+// Setting an item for edite
 function setItemToEdit(item) {
     isEditMode = true;
 
@@ -117,6 +128,7 @@ function setItemToEdit(item) {
     itemInput.value = item.textContent;
 }
 
+// removes item from DOM and Local storage
 function removeItem(item) {
     if (confirm('Are You Sure')) {
         // Remove item from DOM
@@ -124,12 +136,11 @@ function removeItem(item) {
 
         // Remove Item From Storage
         removeItemFromStorage(item.textContent);
-
-
         checkUI();
     }
 }
 
+// removes item from local storage
 function removeItemFromStorage(item) {
     let itemsFromStorage = getItemsFromStorage();
 
@@ -140,6 +151,7 @@ function removeItemFromStorage(item) {
     localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
+// Clear All Button
 function clearItems() {
     if (confirm('Are You Sure?')) {
         while (itemList.firstChild) {
@@ -153,6 +165,7 @@ function clearItems() {
     checkUI();
 }
 
+// Searching for item
 function FilterItems(e) {
     const items = itemList.querySelectorAll('li');
     const text = e.target.value.toLowerCase();
@@ -168,6 +181,7 @@ function FilterItems(e) {
     });
 }
 
+// Checking if there are any items in the list to choose to display clear button and filter form
 function checkUI() {
     itemInput.value = '';
     const items = itemList.querySelectorAll('li');
